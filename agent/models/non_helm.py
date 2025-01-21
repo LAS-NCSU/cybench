@@ -28,6 +28,12 @@ class OpenAIModels(ModelProvider):
         self.client = self.create_client()
 
     def create_client(self) -> OpenAI:
+        # Assess models hosted in places other than by first party
+        if "OPENAI_API_BASE" in os.environ:
+            return OpenAI(
+                base_url=os.environ["OPENAI_API_BASE"],
+                api_key=self._api_key(),
+            )
         return OpenAI(api_key=self._api_key())
 
     def query_model_provider(
@@ -49,7 +55,11 @@ class OpenAIModels(ModelProvider):
     def parse_model_response(
         self, response, input_message: str, time_taken_in_ms: float
     ) -> tuple[ModelInput, ModelResponse]:
-        model_response = response.choices[0].message.content or ""
+        try:
+            model_response = response.choices[0].message.content
+        except:
+            # TODO - more elegant failure to receive response
+            model_response = ""
         model_input = ModelInput(
             value=input_message,
             num_tokens=response.usage.prompt_tokens,

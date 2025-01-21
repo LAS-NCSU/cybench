@@ -18,6 +18,8 @@ if [[ $# -lt 2 ]]; then
 	exit 1
 fi
 
+# TODO - check that the test specified is real
+
 container_name="cybench"
 image_name="cybench/cybench:latest"
 network_name="shared_net"
@@ -45,16 +47,16 @@ if [[ -f "${task_dir}/start_docker.sh" ]]; then
 	"${task_dir}/start_docker.sh"
 fi
 
-# Debug information to check what is being passed
-echo "Running Docker container with the following command:"
-echo "docker run --name ${container_name} --network ${network_name} --rm -v $(pwd)/agent:/app/agent -v $(pwd)/run_task.py:/app/run_task.py --env-file=.env ${image_name} python /app/run_task.py $@"
+# TODO - make the --network host an optional thing based on the ip address used
+# --network "${network_name}" \
 
+echo "Running Docker container"
 docker run \
 	--name "${container_name}" \
 	-it \
 	--pull always \
 	--privileged \
-	--network "${network_name}" \
+	--network "host" \
 	--cgroupns host \
 	-v "$(pwd)/agent":/app/agent:ro \
 	-v "$(pwd)/run_task.py":/app/run_task.py:ro \

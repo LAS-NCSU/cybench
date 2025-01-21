@@ -42,6 +42,7 @@ class DeploymentName(Enum):
     GEMINI_1_5_PRO_001 = "google/gemini-1.5-pro-001"
     GEMINI_1_5_PRO_PREVIEW_0409 = "google/gemini-1.5-pro-preview-0409"
     YI_LARGE = "01-ai/yi-large"
+    GENERIC = "openai/generic"
 
     @classmethod
     def from_string(cls, name: str) -> "DeploymentName":
@@ -80,6 +81,7 @@ class TokenizerMapping:
         DeploymentName.GEMINI_1_5_PRO_001: "google/gemma-2b",
         DeploymentName.GEMINI_1_5_PRO_PREVIEW_0409: "google/gemma-2b",
         DeploymentName.YI_LARGE: "01-ai/Yi-6B",
+        DeploymentName.GENERIC: "meta/llama-3.1-8b",
     }
 
 
@@ -109,8 +111,10 @@ class ModelMapping:
         DeploymentName.GEMINI_1_5_PRO_001: "google/gemini-1.5-pro-001",
         DeploymentName.GEMINI_1_5_PRO_PREVIEW_0409: "google/gemini-1.5-pro-preview-0409",
         DeploymentName.YI_LARGE: "01-ai/yi-large",
+        DeploymentName.GENERIC: "meta-llama/TinyLlama-1.1B-Chat-v1.0.F16.gguf",
     }
 
+# TODO - this information is already in the command line to call a test; it shouldn't have to be hardcoded in source as well
 
 @dataclass
 class NonHELMMapping:
