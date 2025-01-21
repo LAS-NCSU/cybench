@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Type
 
+# TODO - import the specific libraries when the appropriate ModelProvider class is called
 import google.generativeai as gemini
 import tiktoken
 from anthropic import Anthropic
@@ -18,7 +19,6 @@ from tenacity import (
 )
 from together import Together
 
-from agent.dataclasses.agent_spec import DeploymentName, NonHELMMapping
 from agent.models.model_provider import ModelProvider
 from benchmark.dataclasses.task_run import ModelInput, ModelResponse
 
@@ -287,29 +287,28 @@ PROVIDERS: Dict[str, Type[ModelProvider]] = {
     "together": TogetherModels,
 }
 
-
+# TODO - split "model_name" into provider and model names
 def get_provider_instance(
-    model_name: str, azure: bool = False
+    model_name: str,
+    azure: bool = False,
 ) -> tuple[ModelProvider, str]:
+    # model_name should be in openai/gpt-4-0613 format
+    
     try:
-        deployment_name = DeploymentName.from_string(model_name)
-    except ValueError as e:
-        raise ValueError(f"Invalid model name: {model_name}. Error: {e}")
+        provider_name, model_name = model_name.split('/')
+    except:
+        raise ValueError(f"Invalid provider/model name: {model_name}")
 
-    non_helm_model = NonHELMMapping.mapping.get(deployment_name)
-    if not non_helm_model:
-        raise ValueError(f"Model {model_name} not supported in NonHELMMapping")
-
-    provider_name = str(deployment_name).split("/")[0]
+    if provider_name not in PROVIDERS:
+        raise ValueError(f"Provider {provider_name} not supported")
+    
     if provider_name == "openai" and azure:
         provider_name = "azure"
-    provider_class = PROVIDERS.get(provider_name)
-    if not provider_class:
-        raise ValueError(f"Provider {provider_name} not supported")
 
-    return provider_class(), non_helm_model
+    # TODO - dynamically check if provider has a model named model_name 
 
-
+    return PROVIDERS.get(provider_name), model_name
+    
 @retry(
     stop=stop_after_attempt(30),
     wait=wait_exponential(multiplier=1, max=30),

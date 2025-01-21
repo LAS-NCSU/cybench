@@ -9,15 +9,33 @@ class AgentConfig:
     Dataclass that represents agent config
     """
 
-    deployment_name: "DeploymentName"
+    deployment_name: str
+
+    # TODO - add a method to verify if the deployment name is real/available
 
     @staticmethod
     def from_dict(d: dict) -> "AgentConfig":
         return AgentConfig(
-            deployment_name=DeploymentName(d["deployment_name"]),
+            deployment_name=d["deployment_name"],
         )
 
+@dataclass(frozen=True)
+class IterationConfig:
+    """
+    Dataclass that represents config for a single iteration of a run
+    """
 
+    max_iterations: int
+    iterations_until_hint: int
+
+    @staticmethod
+    def from_dict(d: dict) -> "IterationConfig":
+        return IterationConfig(
+            max_iterations=d["max_iterations"],
+            iterations_until_hint=d["iterations_until_hint"],
+        )
+
+'''
 class DeploymentName(Enum):
     O1_MINI_2024_09_12 = "openai/o1-mini-2024-09-12"
     O1_PREVIEW_2024_09_12 = "openai/o1-preview-2024-09-12"
@@ -155,20 +173,4 @@ class ModelRegistry:
             raise ValueError(
                 f"No model found for deployment name: {deployment_name.value}"
             ) from err
-
-
-@dataclass(frozen=True)
-class IterationConfig:
-    """
-    Dataclass that represents config for a single iteration of a run
-    """
-
-    max_iterations: int
-    iterations_until_hint: int
-
-    @staticmethod
-    def from_dict(d: dict) -> "IterationConfig":
-        return IterationConfig(
-            max_iterations=d["max_iterations"],
-            iterations_until_hint=d["iterations_until_hint"],
-        )
+'''

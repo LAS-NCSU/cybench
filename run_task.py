@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Optional, Union
 
 from agent.agent import SimpleAgent
-from agent.dataclasses.agent_spec import AgentConfig, IterationConfig, ModelRegistry
+from agent.dataclasses.agent_spec import AgentConfig, IterationConfig
 from agent.dataclasses.chat_chain import ChatChain
 from agent.prompt import END_TO_END_PROMPT as PROMPT
 from agent.prompt import STOP_TOKEN
@@ -556,10 +556,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--model",
         type=str,
-        help="The model to use for the agent",
-        choices=list(
-            [model.value for model in ModelRegistry.tokenizers.mapping.keys()]
-        ),
+        help="The model to use for the agent. Provider/Model format (ex openai/gpt-4-0613)",
     )
     parser.add_argument(
         "--benchmark_id",

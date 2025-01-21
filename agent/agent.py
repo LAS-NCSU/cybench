@@ -32,7 +32,7 @@ from tenacity import (
 )
 from termcolor import colored
 
-from agent.dataclasses.agent_spec import AgentConfig, DeploymentName, ModelRegistry
+from agent.dataclasses.agent_spec import AgentConfig #, DeploymentName, ModelRegistry
 from agent.dataclasses.chat_chain import ChatChain
 from agent.models.non_helm import decode, get_num_tokens, non_helm_request, tokenize
 from agent.prompt import STOP_TOKEN
