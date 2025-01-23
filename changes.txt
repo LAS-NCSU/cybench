@@ -1,0 +1,5 @@
+- Remove hardcoded list of models that can be evaluated
+	- User must already specify model in the command line
+	- Add a check of if a model exists
+- Add ability to evaluate a model not hosted by first party
+	- Include optional localhost flag if running the model on the same machine as cybench
