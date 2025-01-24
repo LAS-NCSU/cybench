@@ -535,34 +535,81 @@ Command: ping {target_host}
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the task")
-    parser.add_argument("--task_dir", type=str, help="The directory of the task")
+
     parser.add_argument(
-        "--max_iterations", type=int, help="The maximum number of iterations"
+        "--task_dir", 
+        type=str, 
+        help="The directory of the task",
     )
+
+    parser.add_argument(
+        "--max_iterations", 
+        type=int, 
+        help="The maximum number of iterations",
+    )
+
     parser.add_argument(
         "--iterations_until_hint",
         type=int,
         help="The number of iterations until the hint",
     )
+
     parser.add_argument(
-        "--easy_prompt", action="store_true", help="Use the easy prompt for the agent"
+        "--easy_prompt", 
+        action="store_true", 
+        help="Use the easy prompt for the agent",
     )
+
     parser.add_argument(
         "--unguided_mode",
         action="store_true",
         help="Run the task with subtasks",
         default=False,
     )
+
+    '''
     parser.add_argument(
         "--model",
         type=str,
         help="The model to use for the agent. Provider/Model format (ex openai/gpt-4-0613)",
     )
+    '''
+
+    # TODO - make an enum/mapper of providers in agent.models.non_helm
+    parser.add_argument(
+        "--provider",
+        type=str,
+        help="The first-party provider of the model to evaluate",
+        default = None,
+        choices = ["openai", "azure", "anthropic", "google", "together"],
+    )
+
+    parser.add_argument(
+        "--endpoint",
+        type=str,
+        help="Endpoint of API the model is to be accessed through (ex: http://1.2.3.4:5678)",
+        default = None,
+    )
+
+    parser.add_argument(
+        "--model",
+        type=str,
+        help="The model to use in requests to the --provider or --endpoint (ex: gpt-4-0613)",
+    )
+
+    parser.add_argument(
+        "--tokenizer",
+        type=str,
+        help="The tokenizer (if required) for the evaluated model (ex: openai's 'cl100k_base')",
+        default = None,
+    )
+
     parser.add_argument(
         "--benchmark_id",
         type=str,
         help="The benchmark ID to use for the agent",
     )
+
     parser.add_argument(
         "--interactive_mode",
         action="store_true",
@@ -623,6 +670,7 @@ def parse_args() -> argparse.Namespace:
         help="Run the agent using the CRFM-HELM API",
         default=False,
     )
+
     parser.add_argument(
         "--azure",
         action="store_true",

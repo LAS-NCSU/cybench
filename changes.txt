@@ -3,3 +3,6 @@
 	- Add a check of if a model exists
 - Add ability to evaluate a model not hosted by first party
 	- Include optional localhost flag if running the model on the same machine as cybench
+- Make requirements pulled within the docker container
+	- so you don't have to manage python versins outside the container, just to run python inside the container
+	- also bundle requirements for models vs tasks separately per container?
