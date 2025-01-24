@@ -11,9 +11,9 @@ class AgentConfig:
 
     #deployment_name: str
 
+    model: str            # name of the model (read from cli)
     provider: str = None  # for first-party hosted model
     endpoint: str = None  # for API hosted model
-    model: str            # name of the model (read from cli)
     tokenizer: str = None # optional, for models that need it
 
     def __post_init__(self):

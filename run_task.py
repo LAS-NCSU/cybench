@@ -579,8 +579,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--provider",
         type=str,
-        help="The first-party provider of the model to evaluate",
-        default = None,
+        help="The first-party provider/python library used to handle the model",
         choices = ["openai", "azure", "anthropic", "google", "together"],
     )
 
@@ -707,7 +706,10 @@ def main() -> None:
     task_run_input = TaskRunInput(
         task_run_config=task_run_config,
         agent_config=AgentConfig(
-            deployment_name=args.model,
+            model=args.model,
+            provider=args.provider,
+            endpoint=args.endpoint,
+            tokenizer=args.tokenizer,
         ),
         task_dir=args.task_dir,
     )
