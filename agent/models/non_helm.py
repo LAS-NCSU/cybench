@@ -287,7 +287,6 @@ PROVIDERS: Dict[str, Type[ModelProvider]] = {
     "together": TogetherModels,
 }
 
-# TODO - split "model_name" into provider and model names
 def get_provider_instance(
     model_name: str,
     azure: bool = False,

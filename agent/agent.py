@@ -32,7 +32,7 @@ from tenacity import (
 )
 from termcolor import colored
 
-from agent.dataclasses.agent_spec import AgentConfig #, DeploymentName, ModelRegistry
+from agent.dataclasses.agent_spec import AgentConfig
 from agent.dataclasses.chat_chain import ChatChain
 from agent.models.non_helm import decode, get_num_tokens, non_helm_request, tokenize
 from agent.prompt import STOP_TOKEN
@@ -104,7 +104,7 @@ class SimpleAgent:
         timestamp = datetime.now().strftime("%Y_%m_%d_%H:%M:%S")
         log_dir = os.path.join(
             "logs",
-            f"{self.config.deployment_name}",
+            f"{self.config.deployment_name()}",
             f"{self.task_name}",
             f"{timestamp}",
         )
@@ -156,35 +156,29 @@ class SimpleAgent:
         if self.helm:
             self.logger.info("Making request to HELM")
             start_time = datetime.now()
-            if "o1" in str(
-                self.config.deployment_name
-            ):  # o1 and o1-mini don't have stop argument
+
+            # o1 and o1-mini have fixed temperature=1, don't have stop argument
+            # (see https://platform.openai.com/docs/guides/reasoning)
+            if "o1" in self.config.model:  
                 request = Request(
-                    model=ModelRegistry.get_model(
-                        deployment_name=DeploymentName.from_string(
-                            self.config.deployment_name
-                        )
-                    ),
-                    model_deployment=str(self.config.deployment_name),
+                    model=self.config.model,
+                    model_deployment=self.config.deployment_name(),
                     prompt=model_input.value,
-                    temperature=1,  # o1 and o1-mini have fixed temperature=1 (see https://platform.openai.com/docs/guides/reasoning)
+                    temperature=1,   
                     echo_prompt=False,
                     max_tokens=self.max_output_tokens,
                 )
             else:
                 request = Request(
-                    model=ModelRegistry.get_model(
-                        deployment_name=DeploymentName.from_string(
-                            self.config.deployment_name
-                        )
-                    ),
-                    model_deployment=str(self.config.deployment_name),
+                    model=self.config.model,
+                    model_deployment=self.config.deployment_name(),
                     prompt=model_input.value,
                     temperature=TEMPERATURE,
                     echo_prompt=False,
                     max_tokens=self.max_output_tokens,
                     stop_sequences=[STOP_TOKEN],
                 )
+            
             request_result: RequestResult = self.crfm_service.make_request(
                 auth=self.crfm_auth, request=request
             )
@@ -203,7 +197,7 @@ class SimpleAgent:
         else:
             self.logger.info("Making request to non-HELM model")
             _, model_response = non_helm_request(
-                model_name=str(self.config.deployment_name),
+                model_name=self.config.deployment_name(),
                 input_message=model_input.value,
                 temperature=TEMPERATURE,
                 max_tokens=self.max_output_tokens,
@@ -412,17 +406,14 @@ class SimpleAgent:
     )
     def _get_num_tokens(self, model_input: str) -> int:
         if self.helm:
-            tokenizer_name = ModelRegistry.get_tokenizer(
-                DeploymentName.from_string(self.config.deployment_name)
-            )
-            request = TokenizationRequest(tokenizer=tokenizer_name, text=model_input)
+            request = TokenizationRequest(tokenizer=self.config.tokenizer, text=model_input)
             tokenization_result: TokenizationRequestResult = self.crfm_service.tokenize(
                 self.crfm_auth, request
             )
             return len(tokenization_result.tokens)
         else:
             return get_num_tokens(
-                model_name=self.config.deployment_name, input_message=model_input
+                model_name=self.config.deployment_name(), input_message=model_input
             )
 
     @retry(
@@ -434,11 +425,8 @@ class SimpleAgent:
     )
     def _tokenize_input(self, model_input: str) -> List[int]:
         if self.helm:
-            tokenizer_name = ModelRegistry.get_tokenizer(
-                DeploymentName.from_string(self.config.deployment_name)
-            )
             request = TokenizationRequest(
-                tokenizer=tokenizer_name, text=model_input, encode=True
+                tokenizer=self.config.tokenizer, text=model_input, encode=True
             )
             return [
                 int(token)
@@ -448,7 +436,7 @@ class SimpleAgent:
             ]
         else:
             return tokenize(
-                model_name=self.config.deployment_name, input_message=model_input
+                model_name=self.config.deployment_name(), input_message=model_input
             )
 
     @retry(
@@ -460,14 +448,11 @@ class SimpleAgent:
     )
     def _decode_tokenized_inputs(self, tokens: List[int]) -> str:
         if self.helm:
-            tokenizer = ModelRegistry.get_tokenizer(
-                DeploymentName.from_string(self.config.deployment_name)
-            )
             return self.crfm_service.decode(
-                self.crfm_auth, DecodeRequest(tokens=tokens, tokenizer=tokenizer)
+                self.crfm_auth, DecodeRequest(tokens=tokens, tokenizer=self.config.tokenizer)
             ).text
         else:
-            return decode(model_name=self.config.deployment_name, input_tokens=tokens)
+            return decode(model_name=self.config.deployment_name(), input_tokens=tokens)
 
     def _truncate_input_to_max_tokens(self, model_input: str) -> str:
         num_input_tokens = self._get_num_tokens(model_input)
