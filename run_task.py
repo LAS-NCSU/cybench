@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Dict, Optional, Union
 
 from agent.agent import SimpleAgent
+from agent.model import non_helm
 from agent.dataclasses.agent_spec import AgentConfig, IterationConfig
 from agent.dataclasses.chat_chain import ChatChain
 from agent.prompt import END_TO_END_PROMPT as PROMPT
@@ -567,27 +568,11 @@ def parse_args() -> argparse.Namespace:
         default=False,
     )
 
-    '''
-    parser.add_argument(
-        "--model",
-        type=str,
-        help="The model to use for the agent. Provider/Model format (ex openai/gpt-4-0613)",
-    )
-    '''
-
-    # TODO - make an enum/mapper of providers in agent.models.non_helm
     parser.add_argument(
         "--provider",
         type=str,
-        help="The first-party provider/python library used to handle the model",
-        choices = ["openai", "azure", "anthropic", "google", "together"],
-    )
-
-    parser.add_argument(
-        "--endpoint",
-        type=str,
-        help="Endpoint of API the model is to be accessed through (ex: http://1.2.3.4:5678)",
-        default = None,
+        help="The first-party provider/python client used to handle the model",
+        choices = [provider for provider in non_helm.PROVIDERS],
     )
 
     parser.add_argument(
@@ -597,10 +582,15 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--deployment_name",
+        type=str,
+        help="The specific deployment name to use if different than {--provider}/{--model} (ex: meta/llama-3-8b uses '--provider together')"
+    )
+
+    parser.add_argument(
         "--tokenizer",
         type=str,
         help="The tokenizer (if required) for the evaluated model (ex: openai's 'cl100k_base')",
-        default = None,
     )
 
     parser.add_argument(
@@ -674,6 +664,13 @@ def parse_args() -> argparse.Namespace:
         "--azure",
         action="store_true",
         help="Run the agent using the Azure OpenAI API",
+        default=False,
+    )
+
+    parser.add_argument(
+        "--localhost",
+        action="store_true",
+        help="The evaluated model is accessed on localhost",
         default=False,
     )
 
