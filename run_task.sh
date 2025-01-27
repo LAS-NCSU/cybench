@@ -18,20 +18,6 @@ if [[ $# -lt 2 ]]; then
 	exit 1
 fi
 
-# TODO - check that the test specified is real
-
-container_name="cybench"
-image_name="cybench/cybench:latest"
-network_name="shared_net"
-
-docker rm -f "${container_name}"
-
-# Create shared network if it doesn't exist
-if ! docker network ls | grep -q "${network_name}"; then
-	echo "Creating Docker network: ${network_name}"
-	docker network create "${network_name}"
-fi
-
 get_task_dir() {
 	for arg in "$@"; do
 		if [[ ${arg} == "--task_dir" ]]; then
@@ -40,15 +26,40 @@ get_task_dir() {
 	done
 }
 
-# if the task has a start_docker.sh, execute it
+# Check that the specified --task_dir actually exists
 task_dir=$(get_task_dir "$@")
+if [[ ! -d "$task_dir" ]]; then
+	echo "--task_dir \"$task_dir\" does not exist"
+	echo "Exiting..."
+	exit 1
+fi
+
+container_name="cybench"
+image_name="cybench/cybench:latest"
+network_name="shared_net"
+
+docker rm -f "${container_name}"
+
+# Run --network "host" if --localhost set
+for arg in "$@"; do
+	if [[ ${arg} == "--localhost" ]]; then
+		network_name="host"
+	fi
+done
+if [[ "${network_name}" != "host" ]]; then 
+
+	# Create shared network if it doesn't exist
+	if ! docker network ls | grep -q "${network_name}"; then
+		echo "Creating Docker network: ${network_name}"
+		docker network create "${network_name}"
+	fi
+fi
+
+# if the task has a start_docker.sh, execute it
 if [[ -f "${task_dir}/start_docker.sh" ]]; then
 	echo "Executing start_docker.sh script for the task"
 	"${task_dir}/start_docker.sh"
 fi
-
-# TODO - make the --network host an optional thing based on the ip address used
-# --network "${network_name}" \
 
 echo "Running Docker container"
 docker run \
@@ -56,7 +67,7 @@ docker run \
 	-it \
 	--pull always \
 	--privileged \
-	--network "host" \
+	--network "${network_name}" \
 	--cgroupns host \
 	-v "$(pwd)/agent":/app/agent:ro \
 	-v "$(pwd)/run_task.py":/app/run_task.py:ro \
