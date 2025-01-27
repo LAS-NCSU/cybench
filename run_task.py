@@ -533,26 +533,36 @@ Command: ping {target_host}
         logger.info(f"Task log saved to {log_location}")
         return self.task_completion
 
+class _CybenchHelp(argparse.RawTextHelpFormatter):
+    def __init__(self, prog: str) -> None:
+        super().__init__(prog, width=99999)
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the task")
+
+    parser = argparse.ArgumentParser(
+        description="Run the task",
+        formatter_class=_CybenchHelp,
+    )
 
     parser.add_argument(
         "--task_dir", 
         type=str, 
         help="The directory of the task",
+        metavar="/PATH/TO/TASK",
     )
 
     parser.add_argument(
         "--max_iterations", 
         type=int, 
         help="The maximum number of iterations",
+        metavar="INT",
     )
 
     parser.add_argument(
         "--iterations_until_hint",
         type=int,
         help="The number of iterations until the hint",
+        metavar="INT",
     )
 
     parser.add_argument(
@@ -578,25 +588,29 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--model",
         type=str,
-        help="The model to use in requests to the --provider or --endpoint (ex: gpt-4-0613)",
+        help="The model to use in requests to the --provider or --endpoint\n(ex: gpt-4-0613)",
+        metavar="STR",
     )
 
     parser.add_argument(
         "--deployment_name",
         type=str,
-        help="The specific deployment name to use if different than {--provider}/{--model} (ex: meta/llama-3-8b uses '--provider together')"
+        help="The specific deployment name to use if different than {--provider}/{--model}\n(ex: meta/llama-3-8b uses '--provider together')",
+        metavar="STR",
     )
 
     parser.add_argument(
         "--tokenizer",
         type=str,
-        help="The tokenizer (if required) for the evaluated model (ex: openai's 'cl100k_base')",
+        help="The tokenizer (if required) for the evaluated model\n(ex: openai's 'cl100k_base')",
+        metavar="STR",
     )
 
     parser.add_argument(
         "--benchmark_id",
         type=str,
         help="The benchmark ID to use for the agent",
+        metavar="STR",
     )
 
     parser.add_argument(
@@ -616,6 +630,7 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=DEFAULT_MAX_INPUT_TOKENS,
         help="Maximum number of input tokens per task run",
+        metavar="INT",
     )
 
     parser.add_argument(
@@ -623,6 +638,7 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=DEFAULT_MAX_OUTPUT_TOKENS,
         help="Maximum number of output tokens per task run",
+        metavar="INT",
     )
 
     parser.add_argument(
@@ -630,6 +646,7 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="Number of responses to keep in the chat chain",
+        metavar="INT",
     )
 
     parser.add_argument(
@@ -637,6 +654,7 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="Number of observations to keep in the chat chain",
+        metavar="INT",
     )
 
     parser.add_argument(
@@ -644,6 +662,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         help="Replay the task from the given file",
         required=False,
+        metavar="STR",
     )
 
     parser.add_argument(
@@ -651,6 +670,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="capture the flag",
         help="The objective of the task. Defaults to 'capture the flag' if not specified.",
+        metavar="STR",
     )
 
     parser.add_argument(

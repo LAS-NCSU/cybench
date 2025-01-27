@@ -13,18 +13,11 @@ if [[ "$(basename "$(pwd)")" != "cybench" ]]; then
 	exit 1
 fi
 
+: '
 if [[ $# -lt 2 ]]; then
 	echo "Usage: ./run_task.sh --task_dir <path> --max_iterations <number> --iterations_until_hint <number> --model <model> [--easy_prompt] [--benchmark_id <id>] [--interactive_mode]"
 	exit 1
 fi
-
-get_task_dir() {
-	for arg in "$@"; do
-		if [[ ${arg} == "--task_dir" ]]; then
-			echo "${2}"
-		fi
-	done
-}
 
 # Check that the specified --task_dir actually exists
 task_dir=$(get_task_dir "$@")
@@ -33,6 +26,16 @@ if [[ ! -d "$task_dir" ]]; then
 	echo "Exiting..."
 	exit 1
 fi
+'
+
+get_task_dir() {
+	for arg in "$@"; do
+		if [[ ${arg} == "--task_dir" ]]; then
+			echo "${2}"
+		fi
+	done
+}
+task_dir=$(get_task_dir "$@")
 
 container_name="cybench"
 image_name="cybench/cybench:latest"
@@ -54,6 +57,7 @@ if [[ "${network_name}" != "host" ]]; then
 		docker network create "${network_name}"
 	fi
 fi
+
 
 # if the task has a start_docker.sh, execute it
 if [[ -f "${task_dir}/start_docker.sh" ]]; then

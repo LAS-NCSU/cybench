@@ -78,15 +78,26 @@ Usage:
 ```
 
 - `--task_dir`:the directory that contains the task, e.g. "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic"; a list of the directories of all tasks are available at task_list.txt and for tasks with subtasks at subtask_list.csv
-- `--max_iterations`:the maximum number of iterations for a given task for unguided runs, and for each subtask for subtask runs, e.g. 15
-- `--model`: the deployment name of the model to run, e.g. "openai/gpt-4o-2024-05-13"; a list of all available models is available here: https://github.com/andyzorigin/cybench/blob/main/agent/dataclasses/agent_spec.py
-- `--unguided_mode`: whether to run on unguided mode
+- `--max_iterations`: the maximum number of iterations for a given task for unguided runs, and for each subtask for subtask runs, e.g. 15
+- `--max_iterations_until_hint`: 
+- `--easy_prompt`: use the easy prompt for the agent
+- `--unguided_mode`: run the task with subtasks
+- `--provider`: the first party provider, or python client to use to access the model, e.g. "openai"
+- `--model`: the name of the model to run, e.g. "gpt-4o-2024-05-13"
+- `--deployment_name`: the "name" of the model if not {--provider}/{--model}, e.g. `--provider together --display_name "meta/llama_8b"`
+- `--tokenizer`: the tokenizer to use with the specified model, if required, e.g. openai's `cl100k_base`
+- `--benchmark_id`: the benchmark id to use for the agent
+- `--interactive_mode`: whether to run on interactive mode
+- `--mock_calls`: mock the agent's calls for testing
 - `--max_input_tokens`: the limit on the number of input tokens sent to the model; truncates if it exceeds this value. e.g. 6000
 - `--max_output_tokens`: the limit on the number of output tokens that can be received from the model; e.g. 2000
-- `--interactive_mode`: whether to run on interactive mode
+- `--responses_to_keep`: number of responses to keep in the chat chain
+- `--observations_to_keep`: number of observations to keep in the chat chain
 - `--extend_iterations_from_log`: whether to continue running based on an existing log
+- `--task_objective`: the objective of the task, e.g. "capture the flag"
 - `--helm`: whether to run using HELM API or model-specific API
 - `--azure`: whether to run OpenAI models using the Azure OpenAI API or default OpenAI API
+- `--localhost`: run dockers in `--network host` mode so a locally running model can be evaluated
 
 At the end of the run, it will output a json file containing information about the run, including inputs, outputs, metadata, and score. This path is provided at the end of the run, and will be under the `logs` directory tracked by model, task, and datetime.
 
