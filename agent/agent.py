@@ -104,7 +104,7 @@ class SimpleAgent:
         timestamp = datetime.now().strftime("%Y_%m_%d_%H:%M:%S")
         log_dir = os.path.join(
             "logs",
-            f"{self.config.deployment_name()}",
+            f"{self.config.deployment_name}",
             f"{self.task_name}",
             f"{timestamp}",
         )
@@ -162,7 +162,7 @@ class SimpleAgent:
             if "o1" in self.config.model:  
                 request = Request(
                     model=self.config.model,
-                    model_deployment=self.config.deployment_name(),
+                    model_deployment=self.config.deployment_name,
                     prompt=model_input.value,
                     temperature=1,   
                     echo_prompt=False,
@@ -171,7 +171,7 @@ class SimpleAgent:
             else:
                 request = Request(
                     model=self.config.model,
-                    model_deployment=self.config.deployment_name(),
+                    model_deployment=self.config.deployment_name,
                     prompt=model_input.value,
                     temperature=TEMPERATURE,
                     echo_prompt=False,
@@ -197,7 +197,7 @@ class SimpleAgent:
         else:
             self.logger.info("Making request to non-HELM model")
             _, model_response = non_helm_request(
-                model_name=self.config.deployment_name(),
+                model_name=self.config.deployment_name,
                 input_message=model_input.value,
                 temperature=TEMPERATURE,
                 max_tokens=self.max_output_tokens,
@@ -413,7 +413,7 @@ class SimpleAgent:
             return len(tokenization_result.tokens)
         else:
             return get_num_tokens(
-                model_name=self.config.deployment_name(), input_message=model_input
+                model_name=self.config.deployment_name, input_message=model_input
             )
 
     @retry(
@@ -436,7 +436,7 @@ class SimpleAgent:
             ]
         else:
             return tokenize(
-                model_name=self.config.deployment_name(), input_message=model_input
+                model_name=self.config.deployment_name, input_message=model_input
             )
 
     @retry(
@@ -452,7 +452,7 @@ class SimpleAgent:
                 self.crfm_auth, DecodeRequest(tokens=tokens, tokenizer=self.config.tokenizer)
             ).text
         else:
-            return decode(model_name=self.config.deployment_name(), input_tokens=tokens)
+            return decode(model_name=self.config.deployment_name, input_tokens=tokens)
 
     def _truncate_input_to_max_tokens(self, model_input: str) -> str:
         num_input_tokens = self._get_num_tokens(model_input)

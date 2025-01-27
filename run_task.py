@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Optional, Union
 
 from agent.agent import SimpleAgent
-from agent.model import non_helm
+from agent.models.non_helm import PROVIDERS
 from agent.dataclasses.agent_spec import AgentConfig, IterationConfig
 from agent.dataclasses.chat_chain import ChatChain
 from agent.prompt import END_TO_END_PROMPT as PROMPT
@@ -572,7 +572,7 @@ def parse_args() -> argparse.Namespace:
         "--provider",
         type=str,
         help="The first-party provider/python client used to handle the model",
-        choices = [provider for provider in non_helm.PROVIDERS],
+        choices = [provider for provider in PROVIDERS],
     )
 
     parser.add_argument(
@@ -700,14 +700,19 @@ def main() -> None:
             iteration_config=iteration_config,
         ),
     )
-    task_run_input = TaskRunInput(
-        task_run_config=task_run_config,
-        agent_config=AgentConfig(
+
+    if not args.deployment_name:
+        args.deployment_name = f"{args.provider}/{args.model}"
+    agent_config = AgentConfig(
             model=args.model,
             provider=args.provider,
-            endpoint=args.endpoint,
             tokenizer=args.tokenizer,
-        ),
+            deployment_name=args.deployment_name,
+        )
+
+    task_run_input = TaskRunInput(
+        task_run_config=task_run_config,
+        agent_config=agent_config,
         task_dir=args.task_dir,
     )
 

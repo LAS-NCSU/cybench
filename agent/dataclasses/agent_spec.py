@@ -8,23 +8,22 @@ class AgentConfig:
     """
     Dataclass that represents agent config
     """
-
-    deployment_name: str = None  # ex "openai/o1-mini-2024-09-12"
-    model: str                   # name of the model (read from cli)
-    provider: str                # for first-party hosted model
-    tokenizer: str = None        # optional, for models that need it
+    deployment_name: str   # ex "openai/o1-mini-2024-09-12"
+    model: str             # name of the model (read from cli)
+    provider: str          # for first-party hosted model
+    tokenizer: str = None  # optional, for models that need it
 
     def __post_init__(self):
-        if self.provider or self.model is None:
-            raise ValueError("Provider and model must be specified.")
-        if self.deployment_name is None:
-            self.deployment_name = f"{self.provider}/{self.model}"
+        if self.provider is None or self.model is None:
+            raise ValueError("--provider and --model must be specified.")
 
     @staticmethod
     def from_dict(d: dict) -> "AgentConfig":
-        for field in ["provider", "model", "tokenizer", "deployment_name"]:
+        for field in ["provider", "model", "tokenizer"]:
             if field not in d:
                 d[field] = None
+        if "deployment_name" not in d:
+            d["deployment_name"] = d["provider"] + "/" + d["model"]
         return AgentConfig(
             deployment_name=d["deployment_name"],
             provider = d["provider"],

@@ -22,7 +22,6 @@ from together import Together
 from agent.models.model_provider import ModelProvider
 from benchmark.dataclasses.task_run import ModelInput, ModelResponse
 
-
 class OpenAIModels(ModelProvider):
     def __init__(self):
         self.client = self.create_client()
@@ -84,7 +83,6 @@ class OpenAIModels(ModelProvider):
         encoding = tiktoken.encoding_for_model(model_name)
         return len(encoding.encode(input))
 
-
 class AzureOpenAIModels(OpenAIModels):
     def __init__(self):
         self.client = self.create_client()
@@ -114,7 +112,6 @@ class AzureOpenAIModels(OpenAIModels):
             azure_endpoint=self._endpoint(),
             api_version="2024-06-01",
         )
-
 
 class AnthropicModels(ModelProvider):
     def __init__(self):
@@ -291,8 +288,6 @@ def get_provider_instance(
     model_name: str,
     azure: bool = False,
 ) -> tuple[ModelProvider, str]:
-    # model_name should be in openai/gpt-4-0613 format
-    
     try:
         provider_name, model_name = model_name.split('/')
     except:
@@ -306,8 +301,8 @@ def get_provider_instance(
 
     # TODO - dynamically check if provider has a model named model_name 
 
-    return PROVIDERS.get(provider_name), model_name
-    
+    return PROVIDERS.get(provider_name)(), model_name
+
 @retry(
     stop=stop_after_attempt(30),
     wait=wait_exponential(multiplier=1, max=30),
@@ -328,13 +323,13 @@ def get_num_tokens(model_name: str, input_message: str) -> int:
     provider_instance, non_helm_model = get_provider_instance(model_name)
     try:
         return provider_instance.get_num_tokens(
-            model_name=non_helm_model, input=input_message
+            model_name=non_helm_model, 
+            input=input_message,
         )
     except (NotImplementedError, KeyError):
         # Fallback to tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
         return len(encoding.encode(input_message))
-
 
 def tokenize(model_name: str, input_message: str) -> List[int]:
     """
