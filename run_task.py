@@ -700,6 +700,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
+    # check that the task_dir actually exists
+    if not os.path.isdir(args.task_dir):
+        raise ValueError(
+            f"`--task_dir {args.task_dir}` does not exist"
+            "See task_list.txt and subtask_list.txt for benchmark locations"
+        )
+
     metadata = read_metadata(args.task_dir)
     subtasks = get_subtasks(metadata)
 
