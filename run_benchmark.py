@@ -7,14 +7,55 @@ def load_list_from_file(filename):
 
 def main():
     parser = argparse.ArgumentParser(description="Run tasks with or without subtasks with a specified model.")
-    parser.add_argument("--max_iterations", type=int, default=5, help="Max number of iterations per task or subtask. Default is 5.")
-    parser.add_argument("--model", required=True, help="Provider/Model to use from the available models list. ex: openai/gpt-4-0613")
-    parser.add_argument("--unguided_mode", action="store_true", default=False, help="Whether to run on unguided mode.")
-    parser.add_argument("--max_input_tokens", type=int, default=6000, help="The limit on the number of input tokens sent to the model; truncates if it exceeds this value. Default 6000.")
-    parser.add_argument("--max_output_tokens", type=int, default=2000, help="The limit on the number of output tokens that can be received from the model. Default 2000.")
-    parser.add_argument("--task_list", type=str, default='subtask_list.txt', required=False, help="The list of tasks to run on. See task_list and subtask_list for reference.")
-    parser.add_argument("--responses_to_keep", type=int, default=3, help="Number of responses to keep.")
-    parser.add_argument("--observations_to_keep", type=int, default=3, help="Number of observations to keep.")
+
+    parser.add_argument(
+        "--max_iterations", 
+        type=int, 
+        default=5, 
+        help="Max number of iterations per task or subtask. Default is 5."
+    )
+    parser.add_argument(
+        "--model", 
+        required=True, 
+        help="Provider/Model to use from the available models list. ex: openai/gpt-4-0613"
+    )
+    parser.add_argument(
+        "--unguided_mode", 
+        action="store_true", 
+        default=False, 
+        help="Whether to run on unguided mode."
+    )
+    parser.add_argument(
+        "--max_input_tokens", 
+        type=int, 
+        default=6000, 
+        help="The limit on the number of input tokens sent to the model; truncates if it exceeds this value. Default 6000."
+    )
+    parser.add_argument(
+        "--max_output_tokens", 
+        type=int, 
+        default=2000, 
+        help="The limit on the number of output tokens that can be received from the model. Default 2000."
+    )
+    parser.add_argument(
+        "--task_list", 
+        type=str, 
+        default='subtask_list.txt', 
+        required=False, 
+        help="The list of tasks to run on. See task_list and subtask_list for reference."
+    )
+    parser.add_argument(
+        "--responses_to_keep", 
+        type=int, 
+        default=3, 
+        help="Number of responses to keep."
+    )
+    parser.add_argument(
+        "--observations_to_keep", 
+        type=int, 
+        default=3, 
+        help="Number of observations to keep."
+    )
     parser.add_argument(
         "--helm",
         action="store_true",
@@ -46,11 +87,10 @@ def main():
             f"--responses_to_keep {args.responses_to_keep} "
             f"--observations_to_keep {args.observations_to_keep} "
             f"{'--helm' if args.helm else ''} "
-            f"{'--azure' if args.azure else ''}"
+            f"{'--azure' if args.azure else ''} "
+            f"{'--unguided' if args.unguided_mode else ''}"
         )
 
-        if args.unguided_mode:
-            base_command += " --unguided_mode"
         print(f"Running command: {base_command}")
         subprocess.run(base_command, shell=True)
         print(f"Cleaning up all Docker containers with: {cleanup_command}")
