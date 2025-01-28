@@ -15,9 +15,18 @@ def main():
         help="Max number of iterations per task or subtask. Default is 5."
     )
     parser.add_argument(
+        "--provider", 
+        required=True, 
+        help="Provider/framework to access model with. e.g. openai"
+    )
+    parser.add_argument(
         "--model", 
         required=True, 
-        help="Provider/Model to use from the available models list. ex: openai/gpt-4-0613"
+        help="Model to request from provider/base_url. e.g. gpt-4-0613"
+    )
+    parser.add_argument(
+        "--tokenizer", 
+        help="Tokenizer to use with model (if needed). e.g. cl100k_base"
     )
     parser.add_argument(
         "--unguided_mode", 
@@ -68,6 +77,12 @@ def main():
         help="Run the agent using the Azure OpenAI API",
         default=False,
     )
+    parser.add_argument(
+        "--localhost",
+        action="store_true",
+        help="Run the docker environment with `--network=host`",
+        default=False,
+    )
 
     args = parser.parse_args()
 
@@ -83,12 +98,15 @@ def main():
             f"--max_iterations {args.max_iterations} "
             f"--max_input_tokens {args.max_input_tokens} "
             f"--max_output_tokens {args.max_output_tokens} "
-            f"--model {args.model} "
+            f"--provider '{args.provider}' "
+            f"--model '{args.model}' "
+            f"{f"--tokenizer '{args.tokenizer}' " if args.tokenizer else ""}"
             f"--responses_to_keep {args.responses_to_keep} "
             f"--observations_to_keep {args.observations_to_keep} "
-            f"{'--helm' if args.helm else ''} "
-            f"{'--azure' if args.azure else ''} "
-            f"{'--unguided' if args.unguided_mode else ''}"
+            f"{'--helm ' if args.helm else ''}"
+            f"{'--azure ' if args.azure else ''}"
+            f"{'--unguided_mode ' if args.unguided_mode else ''}"
+            f"{'--localhost ' if args.localhost else ''}"
         )
 
         print(f"Running command: {base_command}")

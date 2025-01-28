@@ -79,12 +79,12 @@ Usage:
 
 - `--task_dir`:the directory that contains the task, e.g. "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic"; a list of the directories of all tasks are available at task_list.txt and for tasks with subtasks at subtask_list.csv
 - `--max_iterations`: the maximum number of iterations for a given task for unguided runs, and for each subtask for subtask runs, e.g. 15
-- `--max_iterations_until_hint`: 
+- `--iterations_until_hint`: number of iterations until a hint is given
 - `--easy_prompt`: use the easy prompt for the agent
 - `--unguided_mode`: run the task with subtasks
 - `--provider`: the first party provider, or python client to use to access the model, e.g. "openai"
 - `--model`: the name of the model to run, e.g. "gpt-4o-2024-05-13"
-- `--deployment_name`: the "name" of the model if not {--provider}/{--model}, e.g. `--provider together --display_name "meta/llama_8b"`
+- `--deployment_name`: the deployment name of the model if not {--provider}/{--model}, e.g. `--provider together --display_name "meta/llama_8b"`
 - `--tokenizer`: the tokenizer to use with the specified model, if required, e.g. openai's `cl100k_base`
 - `--benchmark_id`: the benchmark id to use for the agent
 - `--interactive_mode`: whether to run on interactive mode
@@ -104,13 +104,13 @@ At the end of the run, it will output a json file containing information about t
 #### Example Unguided Mode Run
 
 ```bash
-./run_task.sh --task_dir "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic" --max_iterations 15 --unguided_mode --max_input_tokens 6000 --model openai/gpt-4o-2024-05-13
+./run_task.sh --task_dir "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic" --max_iterations 15 --unguided_mode --max_input_tokens 6000 --provider openai --model gpt-4o-2024-05-13 --tokenizer cl100k_base
 ```
 
 #### Example Subtask Mode Run
 
 ```bash
-./run_task.sh --task_dir "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic" --max_iterations 5 --max_input_tokens 6000 --model openai/gpt-4o-2024-05-13
+./run_task.sh --task_dir "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic" --max_iterations 5 --max_input_tokens 6000 --provider openai --model gpt-4o-2024-05-13 --tokenizer cl100k_base
 ```
 
 ## Running the benchmark
@@ -124,13 +124,13 @@ python3 --model <model> run_benchmark.py [--unguided_mode] [--max_iterations <nu
 ### Sample Unguided Mode 'Run Benchmark' Command
 
 ```bash
-python3 run_benchmark.py --max_iterations 15 --unguided_mode --max_input_tokens 6000 --max_output_tokens 2000 --model openai/gpt-4-turbo-2024-04-09
+python3 run_benchmark.py --max_iterations 15 --unguided_mode --max_input_tokens 6000 --max_output_tokens 2000 --provider openai --model gpt-4-turbo-2024-04-09 --tokenizer cl100k_base
 ```
 
 ### Sample Subtask Mode 'Run Benchmark' Command
 
 ```bash
-python3 run_benchmark.py --max_iterations 5 --max_input_tokens 6000 --max_output_tokens 2000 --model openai/gpt-4-turbo-2024-04-09
+python3 run_benchmark.py --max_iterations 5 --max_input_tokens 6000 --max_output_tokens 2000 --provider openai --model TinyLlama-1.1B-Chat-v1.0.F16.gguf --localhost
 ```
 The `run_benchmark.py` script will:
 
@@ -142,14 +142,19 @@ After the benchmark run is complete, all logs will be present in the `/logs/` di
 
 The available arguments for `run_benchmark.py` are:
 
-- `--model`: the deployment name of the model to run, e.g. "openai/gpt-4o-2024-05-13"; a list of all available models is available here: `https://github.com/andyzorigin/cybench/blob/main/agent/dataclasses/agent_spec.py`
 - `--max_iterations`:the maximum number of iterations for a given task for unguided runs, and for each subtask for subtask runs, e.g. 15
+- `--provider`: the provider/framework to access the model with e.g. openai
+- `--model`: the name of the model to run, e.g. gpt-4o-2024-05-13
+- `--tokenizer`: the tokenizer ot use with the model (if needed) e.g. cl100k_base
 - `--unguided_mode`: whether to run on unguided mode
 - `--max_input_tokens`: the limit on the number of input tokens sent to the model; truncates if it exceeds this value. e.g. 6000
 - `--max_output_tokens`: the limit on the number of output tokens that can be received from the model; e.g. 2000
 - `--task_list`: the list of tasks to run on, e.g. `task_list.txt`
+- `--responses_to_keep`: number of respoinses to keep e.g. 3
+- `--observations_to_keep`: number of observations to keep e.g. 3
 - `--helm`: whether to run using HELM API or model-specific API
 - `--azure`: whether to run OpenAI models using the Azure OpenAI API or default OpenAI API
+- `--localhost`: whether to run the docker environment with `--network=host`
 
 Make sure to have the required environment variables set in the `.env` file before running the benchmark.
 
