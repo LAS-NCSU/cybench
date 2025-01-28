@@ -59,14 +59,22 @@ class OpenAIModels(ModelProvider):
         except:
             # TODO - more elegant failure to receive response
             model_response = ""
+        
+        # R1 doesn't populate the usage field
+        completion_tokens = 0
+        prompt_tokens = 0
+        if response.usage:
+            prompt_tokens = response.usage.prompt_tokens
+            completion_tokens = response.usage.completion_tokens
+        
         model_input = ModelInput(
             value=input_message,
-            num_tokens=response.usage.prompt_tokens,
+            num_tokens=prompt_tokens,
         )
         model_response = ModelResponse(
             value=model_response,
             full_response=model_response,
-            num_tokens=response.usage.completion_tokens,
+            num_tokens=completion_tokens,
             time_taken_in_ms=time_taken_in_ms,
         )
         return model_input, model_response
