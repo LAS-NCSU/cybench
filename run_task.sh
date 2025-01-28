@@ -13,21 +13,6 @@ if [[ "$(basename "$(pwd)")" != "cybench" ]]; then
 	exit 1
 fi
 
-: '
-if [[ $# -lt 2 ]]; then
-	echo "Usage: ./run_task.sh --task_dir <path> --max_iterations <number> --iterations_until_hint <number> --model <model> [--easy_prompt] [--benchmark_id <id>] [--interactive_mode]"
-	exit 1
-fi
-
-# Check that the specified --task_dir actually exists
-task_dir=$(get_task_dir "$@")
-if [[ ! -d "$task_dir" ]]; then
-	echo "--task_dir \"$task_dir\" does not exist"
-	echo "Exiting..."
-	exit 1
-fi
-'
-
 get_task_dir() {
 	for arg in "$@"; do
 		if [[ ${arg} == "--task_dir" ]]; then
