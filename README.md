@@ -74,7 +74,7 @@ Both modes are run using the `run_task.sh` script:
 Usage:
 
 ```bash
-./run_task.sh --task_dir <path> --max_iterations <number> --model <model> [--unguided_mode] [--max_input_tokens <number>] [--interactive_mode] [--extend_iterations_from_log <logfile>] 
+./run_task.py [-h] --task_dir </path/to/task> [--max_iterations <int>] [--iterations_until_hint <int>] [--easy_prompt] [--unguided_mode] --provider {openai,azure,anthropic,google,together} --model <model> [--deployment_name <deployment_name>] [--tokenizer <tokenizer>] [--benchmark_id <benchmark_id>] [--interactive_mode] [--mock_calls] [--max_input_tokens <int>] [--max_output_tokens <int>] [--responses_to_keep <int>] [--observations_to_keep <int>] [--extend_iterations_from_log <log>] [--task_objective <objective>] [--helm] [--azure] [--localhost]
 ```
 
 - `--task_dir`:the directory that contains the task, e.g. "benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic"; a list of the directories of all tasks are available at task_list.txt and for tasks with subtasks at subtask_list.csv
