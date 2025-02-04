@@ -49,9 +49,9 @@ def main():
     parser.add_argument(
         "--task_list", 
         type=str, 
-        default='subtask_list.txt', 
+        default='benchmarks.txt', 
         required=False, 
-        help="The list of tasks to run on. See task_list and subtask_list for reference."
+        help="The list of tasks to run on. See benchmarks.txt for reference."
     )
     parser.add_argument(
         "--responses_to_keep", 
@@ -90,7 +90,7 @@ def main():
     if args.task_list:
         items = load_list_from_file(args.task_list)
     else:
-        items = load_list_from_file('task_list.txt') if args.unguided_mode else load_list_from_file('subtask_list.txt')
+        items = load_list_from_file('benchmarks.txt') 
 
     for item in items:
         base_command = (
