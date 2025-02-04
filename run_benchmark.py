@@ -100,7 +100,7 @@ def main():
             f"--max_output_tokens {args.max_output_tokens} "
             f"--provider '{args.provider}' "
             f"--model '{args.model}' "
-            f"{f"--tokenizer '{args.tokenizer}' " if args.tokenizer else ""}"
+            f"{'--tokenizer '+args.tokenizer if args.tokenizer else ''}"
             f"--responses_to_keep {args.responses_to_keep} "
             f"--observations_to_keep {args.observations_to_keep} "
             f"{'--helm ' if args.helm else ''}"
