@@ -1,40 +1,40 @@
-benchmark/project-sekai-ctf/sekaictf-2023/crypto/noisier-crc
-benchmark/project-sekai-ctf/sekaictf-2023/misc/just-another-pickle-jail
-benchmark/project-sekai-ctf/sekaictf-2023/web/chunky
-benchmark/project-sekai-ctf/sekaictf-2023/pwn/network-tools
-benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Primary Knowledge
-benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Medium] Partial Tenacity
-benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Very Easy] Dynastic
-benchmark/hackthebox/cyber-apocalypse-2024/forensics/[Very Easy] It Has Begun
-benchmark/hackthebox/cyber-apocalypse-2024/forensics/[Very Easy] Urgent
-benchmark/hackthebox/cyber-apocalypse-2024/misc/[Medium] Were Pickle Phreaks Revenge
-benchmark/hackthebox/cyber-apocalypse-2024/pwn/[Very Easy] Delulu
-benchmark/hackthebox/cyber-apocalypse-2024/reversing/[Very Easy] PackedAway
-benchmark/hackthebox/cyber-apocalypse-2024/reversing/[Easy] Crushing
-benchmark/hackthebox/cyber-apocalypse-2024/reversing/[Hard] FlecksOfGold
-benchmark/LosFuzzys/GlacierCTF2023_writeups/crypto/MissingBits
-benchmark/LosFuzzys/GlacierCTF2023_writeups/crypto/SLCG
-benchmark/LosFuzzys/GlacierCTF2023_writeups/crypto/WalkingToTheSeaSide
-benchmark/LosFuzzys/GlacierCTF2023_writeups/crypto/shuffled-aes
-benchmark/LosFuzzys/GlacierCTF2023_writeups/intro/skilift
-benchmark/LosFuzzys/GlacierCTF2023_writeups/misc/avatar
-benchmark/LosFuzzys/GlacierCTF2023_writeups/rev/rpgo
-benchmark/LosFuzzys/GlacierCTF2023_writeups/rev/sop
-benchmark/LosFuzzys/GlacierCTF2023_writeups/web/GlacierExchange
-benchmark/project-sekai-ctf/sekaictf-2022/crypto/diffecient
-benchmark/project-sekai-ctf/sekaictf-2022/crypto/robust-cbc
-benchmark/project-sekai-ctf/sekaictf-2022/crypto/ezmaze
-benchmark/project-sekai-ctf/sekaictf-2023/crypto/randsubware
-benchmark/project-sekai-ctf/sekaictf-2023/web/frog-waf
-benchmark/hackthebox/cyber-apocalypse-2024/forensics/[Medium] Data Siege
-benchmark/hkcert-ctf/CTF-Challenges/CTF-2022/05-motp
-benchmark/hackthebox/cyber-apocalypse-2024/web/[Easy] Labyrinth Linguist
-benchmark/hackthebox/cyber-apocalypse-2024/reversing/[Very Easy] LootStash
-benchmark/hackthebox/cyber-apocalypse-2024/crypto/[Hard] Permuted
-benchmark/hkcert-ctf/CTF-Challenges/CTF-2022/22-back-to-the-past
-benchmark/hackthebox/cyber-apocalypse-2024/web/[Very Easy] Flag Command
-benchmark/hackthebox/cyber-apocalypse-2024/misc/[Easy] Unbreakable
-benchmark/hackthebox/cyber-apocalypse-2024/web/[Medium] LockTalk
-benchmark/project-sekai-ctf/sekaictf-2023/crypto/noisy-crc
-benchmark/project-sekai-ctf/sekaictf-2023/forensics/eval-me
-benchmark/project-sekai-ctf/sekaictf-2022/crypto/failproof
+benchmark/hackthebox_cyber-apocalypse-2024_crypto_[Hard]_Permuted
+benchmark/hackthebox_cyber-apocalypse-2024_crypto_[Medium]_Partial_Tenacity
+benchmark/hackthebox_cyber-apocalypse-2024_crypto_[Very_Easy]_Dynastic
+benchmark/hackthebox_cyber-apocalypse-2024_crypto_[Very_Easy]_Primary_Knowledge
+benchmark/hackthebox_cyber-apocalypse-2024_forensics_[Medium]_Data_Siege
+benchmark/hackthebox_cyber-apocalypse-2024_forensics_[Very_Easy]_It_Has_Begun
+benchmark/hackthebox_cyber-apocalypse-2024_forensics_[Very_Easy]_Urgent
+benchmark/hackthebox_cyber-apocalypse-2024_misc_[Easy]_Unbreakable
+benchmark/hackthebox_cyber-apocalypse-2024_misc_[Medium]_Were_Pickle_Phreaks_Revenge
+benchmark/hackthebox_cyber-apocalypse-2024_pwn_[Very_Easy]_Delulu
+benchmark/hackthebox_cyber-apocalypse-2024_reversing_[Easy]_Crushing
+benchmark/hackthebox_cyber-apocalypse-2024_reversing_[Very_Easy]_LootStash
+benchmark/hackthebox_cyber-apocalypse-2024_reversing_[Very_Easy]_PackedAway
+benchmark/hackthebox_cyber-apocalypse-2024_web_[Easy]_Labyrinth_Linguist
+benchmark/hackthebox_cyber-apocalypse-2024_web_[Medium]_LockTalk
+benchmark/hackthebox_cyber-apocalypse-2024_web_[Very_Easy]_Flag_Command
+benchmark/hkcert-ctf_CTF-Challenges_CTF-2022_05-motp
+benchmark/hkcert-ctf_CTF-Challenges_CTF-2022_22-back-to-the-past
+benchmark/LosFuzzys_GlacierCTF2023_writeups_crypto_MissingBits
+benchmark/LosFuzzys_GlacierCTF2023_writeups_crypto_shuffled-aes
+benchmark/LosFuzzys_GlacierCTF2023_writeups_crypto_SLCG
+benchmark/LosFuzzys_GlacierCTF2023_writeups_crypto_WalkingToTheSeaSide
+benchmark/LosFuzzys_GlacierCTF2023_writeups_intro_skilift
+benchmark/LosFuzzys_GlacierCTF2023_writeups_misc_avatar
+benchmark/LosFuzzys_GlacierCTF2023_writeups_rev_rpgo
+benchmark/LosFuzzys_GlacierCTF2023_writeups_rev_sop
+benchmark/LosFuzzys_GlacierCTF2023_writeups_web_GlacierExchange
+benchmark/project-sekai-ctf_sekaictf-2022_crypto_diffecient
+benchmark/project-sekai-ctf_sekaictf-2022_crypto_ezmaze
+benchmark/project-sekai-ctf_sekaictf-2022_crypto_failproof
+benchmark/project-sekai-ctf_sekaictf-2022_crypto_robust-cbc
+benchmark/project-sekai-ctf_sekaictf-2023_crypto_noisier-crc
+benchmark/project-sekai-ctf_sekaictf-2023_crypto_noisy-crc
+benchmark/project-sekai-ctf_sekaictf-2023_crypto_randsubware
+benchmark/project-sekai-ctf_sekaictf-2023_forensics_eval-me
+benchmark/project-sekai-ctf_sekaictf-2023_pwn_network-tools
+benchmark/project-sekai-ctf_sekaictf-2023_web_chunky
+benchmark/project-sekai-ctf_sekaictf-2023_web_frog-waf
+benchmark/hackthebox_cyber-apocalypse-2024_reversing_[Hard]_FlecksOfGold
+benchmark/project-sekai-ctf_sekaictf-2023_misc_just-another-pickle-jail
