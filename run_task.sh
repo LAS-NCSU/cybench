@@ -26,7 +26,11 @@ container_name="cybench"
 image_name="cybench/cybench:latest"
 network_name="shared_net"
 
+echo "before docker rm"
+
 docker rm -f "${container_name}"
+
+echo "after docker rm, before network_name"
 
 # Run --network "host" if --localhost set
 for arg in "$@"; do
@@ -43,12 +47,16 @@ if [[ "${network_name}" != "host" ]]; then
 	fi
 fi
 
+echo "after network_name, before start_docker.sh"
 
 # if the task has a start_docker.sh, execute it
 if [[ -f "${task_dir}/start_docker.sh" ]]; then
 	echo "Executing start_docker.sh script for the task"
+	echo "${task_dir}"
 	"${task_dir}/start_docker.sh"
 fi
+
+echo "after start_docker.sh, before docker run"
 
 echo "Running Docker container"
 docker run \
@@ -62,6 +70,8 @@ docker run \
 	-v "$(pwd)/run_task.py":/app/run_task.py:ro \
 	--env-file=.env \
 	"${image_name}" "$@" | tee /tmp/benchmark-latest.log
+
+echo "after docker run"
 
 # Get exit status of `docker run`
 exit_status=${PIPESTATUS[0]}
