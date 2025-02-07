@@ -13,4 +13,10 @@ source venv/bin/activate
 
 #pip3 install -r requirements.txt --quiet
 
-python3 run_benchmark.py --max_iterations 25 --max_input_tokens 150000 --max_output_tokens 150000 --provider openai --model deepseek-r1-distill-qwen-14b --responses_to_keep 25 --observations_to_keep 25
+#python check_models.py http://172.31.4.136:8000/v1 asdf
+echo "Installing pip requirements"
+
+model=DeepSeek-R1-Distill-Llama-70B
+
+
+python3 run_benchmark.py --max_iterations 25 --max_input_tokens 150000 --max_output_tokens 150000 --provider openai --model $model --responses_to_keep 25 --observations_to_keep 25

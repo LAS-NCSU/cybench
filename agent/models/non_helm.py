@@ -297,7 +297,11 @@ def get_provider_instance(
     azure: bool = False,
 ) -> tuple[ModelProvider, str]:
     try:
-        provider_name, model_name = model_name.split('/')
+        # Gotta go fast!
+        # TODO just re-do this whole function
+        parts = model_name.split('/')
+        provider_name = parts[0]
+        model_name = "/".join(parts[1:])
     except:
         raise ValueError(f"Invalid provider/model name: {model_name}")
 
