@@ -16,7 +16,7 @@ source venv/bin/activate
 #python check_models.py http://172.31.4.136:8000/v1 asdf
 echo "Installing pip requirements"
 
-model=DeepSeek-R1-Distill-Llama-70B
+model=deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+# max token length of 73376 total (input and output combined)
 
-
-python3 run_benchmark.py --max_iterations 25 --max_input_tokens 150000 --max_output_tokens 150000 --provider openai --model $model --responses_to_keep 25 --observations_to_keep 25
+python3 run_benchmark.py --max_iterations 25 --max_input_tokens 35000 --max_output_tokens 38376 --provider openai --model $model --responses_to_keep 25 --observations_to_keep 25
